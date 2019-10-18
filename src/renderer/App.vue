@@ -12,4 +12,7 @@
 
 <style>
   /* CSS */
+  body {
+    padding: 30px;
+  }
 </style>
