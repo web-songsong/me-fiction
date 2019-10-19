@@ -3,7 +3,6 @@ const cheerio = require('cheerio')
 const fs = require('fs')
 const {mapLimit} = require('async')
 const path = require('path')
-
 /*获取列表列表信息*/
 async function get_list_info(url) {
   const novel_list = []
