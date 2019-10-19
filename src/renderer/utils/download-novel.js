@@ -29,8 +29,6 @@ async function get_list_info(url) {
     return novel_list
   })
 }
-
-
 /*解析结构*/
 async function downloadNovel(local, {href, title}) {
   console.log('ok---', title)
@@ -49,8 +47,6 @@ ${body}
     `
   })
 }
-
-
 /*读取列表数据，进行获取， 写入操作*/
 async function get_write(list, local, filePath, file_name = 'novel.txt') {
   const ws = fs.createWriteStream(path.join(filePath, file_name))
@@ -76,8 +72,6 @@ async function get_write(list, local, filePath, file_name = 'novel.txt') {
     )
   })
 }
-
-
 /*运行*/
 async function start(config, callBack) {
   console.log('start: ', config)
