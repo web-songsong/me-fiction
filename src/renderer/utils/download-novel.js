@@ -70,7 +70,7 @@ async function get_write({list, local, filePath = './', fileName = 'novel.txt', 
 /*运行*/
 export default async (config, callback) => {
   console.log('config', config)
-  const {url, local, file_path, file_name, keyword} = config
+  const {url, local, file_path: filePath, file_name: fileName, keyword} = config
   let list = await get_list_info(url, keyword)
-  await get_write({list, local, file_path, file_name, callback})
+  await get_write({list, local, filePath, fileName, callback})
 }

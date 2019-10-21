@@ -76,7 +76,7 @@
     methods: {
       handle_download() {
         console.log(this.novel_config)
-        if (!Object.values(this.novel_config).every(val => val)) return alert('请选择下载路径')
+        if (!Object.values(this.novel_config).every(val => val)) return alert('请填写完整的参数信息')
         const config = this.novel_config
         this.file_name && (config['file_name'] = this.file_name)
         this.keyword && (config['keyword'] = this.keyword)
