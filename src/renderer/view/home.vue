@@ -3,11 +3,11 @@
 
 
     <el-form :model="novel_config"
-             label-width="80px">
+             label-width="110px">
 
       <el-form-item label="主站">
         <el-select v-model="novel_config.local"
-                   placeholder="请选择目标主站">
+                   placeholder="请选择目标主站" value="">
           <el-option
               v-for="item in locals"
               :key="item.local"
@@ -15,18 +15,26 @@
               :value="item.local">
           </el-option>
         </el-select>
+        <el-link type="primary"
+                 @click="open_link"
+                 v-if="novel_config.local">打开主站
+        </el-link>
       </el-form-item>
-      <el-form-item label="目标链接">
+      <el-form-item label="目标目录链接">
         <el-input v-model="novel_config.url"></el-input>
+      </el-form-item>
+      <el-form-item label="爬去目录关键字">
+        <el-input v-model="keyword"
+                  placeholder="默认为（正文）"></el-input>
       </el-form-item>
       <el-form-item label="下载路径">
         <input class="file-input"
                type="file"
                webkitdirectory
-               @change="testChange"
+               @change="download_path"
                directory/>
       </el-form-item>
-      <el-form-item label="目标链接">
+      <el-form-item label="下载文件名称">
         <el-input v-model="file_name"
                   placeholder="默认为（novel.txt）"></el-input>
       </el-form-item>
@@ -36,6 +44,8 @@
         </el-button>
       </el-form-item>
     </el-form>
+
+
   </div>
 </template>
 
@@ -48,12 +58,13 @@
     data() {
       return {
         novel_config: {
-          url: 'https://www.qu.la/book/233849/',
-          local: 'https://www.qu.la',
-          file_path: '/Users/charmingsong/Desktop',
+          url: '',
+          local: '',
+          file_path: null,
 
         },
         file_name: '',
+        keyword: '',
         locals: [
           {
             name: '笔趣阁: qu.la',
@@ -68,15 +79,25 @@
         if (!Object.values(this.novel_config).every(val => val)) return alert('请选择下载路径')
         const config = this.novel_config
         this.file_name && (config['file_name'] = this.file_name)
-        download_novel(config, () => new Notification('success', {
-          body: '下载成功'
-        }))
+        this.keyword && (config['keyword'] = this.keyword)
+        const loading = this.$loading({
+          lock: true,
+          text: '下载中',
+        })
+        download_novel(config, () => {
+          loading.close()
+          new Notification('success', {
+            body: '下载成功'
+          })
+        })
       },
-      testChange(e) {
-
+      download_path(e) {
         this.novel_config.file_path = e.target.files.length ? e.target.files[0].path : this.novel_config.file_path
+      },
+      open_link() {
+        this.$electron.shell.openExternal(this.novel_config.local)
       }
-    },
+    }
   }
 </script>
 
