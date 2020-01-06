@@ -17,22 +17,22 @@ function createWindow() {
   if (process.platform === 'darwin') {
     const template = [
       {
-        label: "Application",
+        label: 'Application',
         submenu: [
           {
-            label: "Quit", accelerator: "Command+Q", click: function () {
+            label: 'Quit', accelerator: 'Command+Q', click: function () {
               app.quit()
-            }
-          }
-        ]
+            },
+          },
+        ],
       },
       {
-        label: "Edit",
+        label: 'Edit',
         submenu: [
-          {label: "Copy", accelerator: "CmdOrCtrl+C", selector: "copy:"},
-          {label: "Paste", accelerator: "CmdOrCtrl+V", selector: "paste:"},
-        ]
-      }
+          {label: 'Copy', accelerator: 'CmdOrCtrl+C', selector: 'copy:'},
+          {label: 'Paste', accelerator: 'CmdOrCtrl+V', selector: 'paste:'},
+        ],
+      },
     ]
     Menu.setApplicationMenu(Menu.buildFromTemplate(template))
   } else {
@@ -45,7 +45,7 @@ function createWindow() {
   mainWindow = new BrowserWindow({
     height: 450,
     useContentSize: true,
-    width: 500
+    width: 500,
   })
 
   mainWindow.loadURL(winURL)

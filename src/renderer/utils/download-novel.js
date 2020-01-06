@@ -15,7 +15,7 @@ async function get_list_info(url, keyword = '正文') {
           let link_a = $(val).find('a')
           novel_list.push({
             title: link_a.text(),
-            href: link_a.attr('href')
+            href: link_a.attr('href'),
           })
         })
       }
@@ -25,8 +25,9 @@ async function get_list_info(url, keyword = '正文') {
 }
 
 /*解析结构*/
-async function downloadNovel(local, {href, title}) {
-  console.log('ok---', title)
+async function downloadNovel(local, {href, title}, progress, len) {
+  // console.log('ok---', title)
+  progress(len)
   return get(local + href).then(res => {
     const $ = cheerio.load(res.text, {decodeEntities: false})
     let body = $('.content_read #content')
@@ -44,33 +45,34 @@ ${body}
 }
 
 /*读取列表数据，进行获取， 写入操作*/
-async function get_write({list, local, filePath = './', fileName = 'novel.txt', callback}) {
+async function get_write({list, local, filePath = './', fileName = 'novel.txt', progress, callback}) {
   const ws = fs.createWriteStream(path.join(filePath, fileName))
+  let len = list.length
   return await mapLimit(
     list,
     10,
     (item, callback) => {
-      downloadNovel(local, item).then(str => {
+      downloadNovel(local, item, progress, len).then(str => {
         callback(null, str)
       })
     },
     (err, allData) => {
       if (err) throw err
-      console.log('ws')
+      // console.log('ws')
       allData.forEach(text => {
         ws.write(text)
       })
-      console.log('ok')
+      // console.log('ok')
       ws.end()
       callback && callback()
-    }
+    },
   )
 }
 
 /*运行*/
 export default async (config, callback) => {
-  console.log('config', config)
-  const {url, local, file_path: filePath, file_name: fileName, keyword} = config
+  // console.log('config', config)
+  const {url, local, file_path: filePath, file_name: fileName, keyword, progress} = config
   let list = await get_list_info(url, keyword)
-  await get_write({list, local, filePath, fileName, callback})
+  await get_write({list, local, filePath, fileName, progress, callback})
 }
