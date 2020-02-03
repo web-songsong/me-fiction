@@ -1,7 +1,7 @@
-const {get} = require('superagent')
+const { get } = require('superagent')
 const cheerio = require('cheerio')
 const fs = require('fs')
-const {mapLimit} = require('async')
+const { mapLimit } = require('async')
 const path = require('path')
 
 /*获取列表列表信息*/
@@ -25,11 +25,11 @@ async function get_list_info(url, keyword = '正文') {
 }
 
 /*解析结构*/
-async function downloadNovel(local, {href, title}, progress, len) {
+async function downloadNovel(local, { href, title }, progress, len) {
   // console.log('ok---', title)
   progress(len)
   return get(local + href).then(res => {
-    const $ = cheerio.load(res.text, {decodeEntities: false})
+    const $ = cheerio.load(res.text, { decodeEntities: false })
     let body = $('.content_read #content')
       .html()
       .trim()
@@ -45,7 +45,7 @@ ${body}
 }
 
 /*读取列表数据，进行获取， 写入操作*/
-async function get_write({list, local, filePath = './', fileName = 'novel.txt', progress, callback}) {
+async function get_write({ list, local, filePath = './', fileName = 'novel.txt', progress, callback }) {
   const ws = fs.createWriteStream(path.join(filePath, fileName))
   let len = list.length
   return await mapLimit(
@@ -72,7 +72,8 @@ async function get_write({list, local, filePath = './', fileName = 'novel.txt', 
 /*运行*/
 export default async (config, callback) => {
   // console.log('config', config)
-  const {url, local, file_path: filePath, file_name: fileName, keyword, progress} = config
+  const { url, local, file_path: filePath, file_name: fileName, keyword, progress } = config
   let list = await get_list_info(url, keyword)
-  await get_write({list, local, filePath, fileName, progress, callback})
+
+  await get_write({ list, local, filePath, fileName, progress, callback })
 }

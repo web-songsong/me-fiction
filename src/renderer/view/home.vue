@@ -24,22 +24,22 @@
 
       </el-form-item>
       <el-form-item label="目标目录链接">
-        <el-input v-model="novel_config.url"/>
+        <el-input v-model="novel_config.url" />
       </el-form-item>
       <el-form-item label="爬去目录关键字">
         <el-input v-model="keyword"
-                  placeholder="默认为（正文）"/>
+                  placeholder="默认为（正文）" />
       </el-form-item>
       <el-form-item label="下载路径">
         <input class="file-input"
                type="file"
                webkitdirectory
                @change="download_path"
-               directory/>
+               directory />
       </el-form-item>
       <el-form-item label="下载文件名称">
         <el-input v-model="file_name"
-                  placeholder="默认为（novel.txt）"/>
+                  placeholder="默认为（novel.txt）" />
       </el-form-item>
       <el-form-item>
         <el-button type="primary"
@@ -50,7 +50,7 @@
 
     <Progress class="ProgressWrap"
               v-else
-              :percentage="percentage"/>
+              :percentage="percentage" />
   </div>
 </template>
 
@@ -99,14 +99,15 @@
 
         download_novel(config, () => {
           this.flag = true
-          loading.close()
           new Notification('success', {
             body: '下载成功',
           })
         })
       },
       download_path(e) {
-        this.novel_config.file_path = e.target.files.length ? e.target.files[0].path : this.novel_config.file_path
+        this.novel_config.file_path = e.target.files.length
+                                      ? e.target.files[0].path
+                                      : this.novel_config.file_path
       },
       open_link() {
         this.$electron.shell.openExternal(this.novel_config.local)
