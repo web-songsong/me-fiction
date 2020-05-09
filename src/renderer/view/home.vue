@@ -73,7 +73,7 @@
         keyword: "",
         locals: [
           {
-            name: "笔趣阁",
+            name: "笔趣阁（目前仅支持）",
             local: "https://www.biquge.com.cn/"
           }
         ]

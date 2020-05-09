@@ -26,7 +26,8 @@ async function get_list_info(url, keyword = '正文') {
 
 /*解析结构*/
 async function downloadNovel(local, { href, title }, progress, len) {
-  // console.log('ok---', title)
+
+
   progress(len)
   return get(local + href).then(res => {
     const $ = cheerio.load(res.text, { decodeEntities: false })
@@ -74,6 +75,5 @@ export default async (config, callback) => {
   // console.log('config', config)
   const { url, local, file_path: filePath, file_name: fileName, keyword, progress } = config
   let list = await get_list_info(url, keyword)
-
   await get_write({ list, local, filePath, fileName, progress, callback })
 }
